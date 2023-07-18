@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(frontier_exploration)
+project(frontier_msgs)
 
 # Find dependencies
 find_package(ament_cmake REQUIRED)
@@ -13,14 +13,10 @@ include_directories(
   include
 )
 
-# Add executable
-add_executable(frontier_search src/frontier_search.cpp)
-ament_target_dependencies(frontier_search rclcpp geometry_msgs nav2_costmap_2d frontier_msgs)
-
-# Install executable
-install(TARGETS frontier_search
-  DESTINATION lib/${PROJECT_NAME})
-
+rosidl_generate_interfaces(${PROJECT_NAME}
+"msg/Frontier.msg"
+DEPENDENCIES builtin_interfaces geometry_msgs
+)
 
 ament_export_dependencies(rosidl_default_runtime)
 

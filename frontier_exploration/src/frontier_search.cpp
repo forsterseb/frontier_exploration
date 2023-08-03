@@ -17,7 +17,9 @@ using nav2_costmap_2d::LETHAL_OBSTACLE;
 using nav2_costmap_2d::NO_INFORMATION;
 using nav2_costmap_2d::FREE_SPACE;
 
-FrontierSearch::FrontierSearch(nav2_costmap_2d::Costmap2D &costmap) : costmap_(costmap) { }
+FrontierSearch::FrontierSearch(nav2_costmap_2d::Costmap2D &costmap) : costmap_(costmap) { 
+    RCLCPP_INFO(rclcpp::get_logger("frontier_search"), "Frontier search constructor");
+}
 
 std::list<frontier_msgs::msg::Frontier> FrontierSearch::searchFrom(geometry_msgs::msg::Point position){
 
@@ -70,6 +72,7 @@ std::list<frontier_msgs::msg::Frontier> FrontierSearch::searchFrom(geometry_msgs
             else if(isNewFrontierCell(nbr, frontier_flag)){
                 frontier_flag[nbr] = true;
                 frontier_msgs::msg::Frontier new_frontier = buildNewFrontier(nbr, pos, frontier_flag);
+                // TODO: Set minimum frontier point size.
                 if(new_frontier.size > 1){
                     frontier_list.push_back(new_frontier);
                 }
@@ -252,20 +255,20 @@ void localizationPoseCallback(const geometry_msgs::msg::PoseWithCovarianceStampe
 }
 
 
-int main(int argc, char** argv) {
-  rclcpp::init(argc, argv);
-  auto node = std::make_shared<rclcpp::Node>("frontier_search");
+// int main(int argc, char** argv) {
+//   rclcpp::init(argc, argv);
+//   auto node = std::make_shared<rclcpp::Node>("frontier_search");
 
-  auto map_sub = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
-    "map", 10, mapCallback);
+//   auto map_sub = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
+//     "/map", 10, mapCallback);
 
-  auto localization_pose_sub = node->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
-    "localization_pose", 10, localizationPoseCallback);
+//   auto localization_pose_sub = node->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
+//     "localization_pose", 10, localizationPoseCallback);
 
-  marker_pub_initial = node->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_markers_initial", 10);
-  marker_pub_centroid = node->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_markers_centroid", 10);
-  rclcpp::spin(node);
-  rclcpp::shutdown();
+//   marker_pub_initial = node->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_markers_initial", 10);
+//   marker_pub_centroid = node->create_publisher<visualization_msgs::msg::MarkerArray>("frontier_markers_centroid", 10);
+//   rclcpp::spin(node);
+//   rclcpp::shutdown();
 
-  return 0;
-}
+//   return 0;
+// }

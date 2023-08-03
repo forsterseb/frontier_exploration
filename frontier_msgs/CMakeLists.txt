@@ -7,7 +7,6 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(nav2_costmap_2d REQUIRED)
-find_package(frontier_msgs)
 
 include_directories(
   include
@@ -15,6 +14,9 @@ include_directories(
 
 rosidl_generate_interfaces(${PROJECT_NAME}
 "msg/Frontier.msg"
+"srv/GetNextFrontier.srv"
+"srv/UpdateBoundaryPolygon.srv"
+"action/ExploreTask.action"
 DEPENDENCIES builtin_interfaces geometry_msgs
 )
 

@@ -8,6 +8,7 @@ from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.actions import Node
+from launch_ros.actions import PushRosNamespace
 from launch_ros.descriptions import ComposableNode
 from nav2_common.launch import RewrittenYaml
 
@@ -49,6 +50,7 @@ def generate_launch_description():
 
     load_nodes = GroupAction(
         actions=[
+            PushRosNamespace(namespace),
             Node(
                 package='frontier_exploration',
                 executable='explore_server',

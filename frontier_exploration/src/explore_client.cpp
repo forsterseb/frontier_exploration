@@ -139,7 +139,7 @@ public:
     {
         input_.header.frame_id = "map";
         point_ = create_subscription<geometry_msgs::msg::PointStamped>(
-            "/clicked_point", 10, std::bind(&FrontierExplorationClient::pointCb, this, std::placeholders::_1));
+            "clicked_point", 10, std::bind(&FrontierExplorationClient::pointCb, this, std::placeholders::_1));
         point_viz_pub_ = create_publisher<visualization_msgs::msg::Marker>("exploration_polygon_marker", 10);
         point_viz_timer_ = create_wall_timer(std::chrono::milliseconds(100), std::bind(&FrontierExplorationClient::vizPubCb, this));
         RCLCPP_INFO(rclcpp::get_logger("explore_client"),"Please use the 'Point' tool in Rviz to select an exporation boundary.");
